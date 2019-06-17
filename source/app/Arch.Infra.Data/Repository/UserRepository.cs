@@ -12,15 +12,24 @@ namespace Arch.Infra.Data.Repository
 {
     public class UserRepository : RepositoryBase<User>, Core.Interfaces.Repository.IUserRepository
     {
-        public IEnumerable<User> GetActiveUsers()
+        /// <summary>
+        /// Entity framework test
+        /// </summary>
+        /// <param name="onlyActive"></param>
+        /// <returns></returns>
+        public IEnumerable<User> GetUsers(bool onlyActive)
         {
             var lstActiveUsers = from u in db.User
-                                 where u.Active == true
+                                 where (!onlyActive || u.Active == true)
                                  select u;
 
             return lstActiveUsers;
         }
 
+        /// <summary>
+        /// Dapper Test
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<User> GetAll()
         {
             using (var conn = new SqlConnection(ConnectionString))
@@ -39,6 +48,11 @@ namespace Arch.Infra.Data.Repository
             }
         }
 
+        /// <summary>
+        /// Dapper Test
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         public IEnumerable<User> GetAll(Expression<Func<User, bool>> filter)
         {
             using (var conn = new SqlConnection(ConnectionString))
@@ -48,24 +62,16 @@ namespace Arch.Infra.Data.Repository
             }
         }
 
+        /// <summary>
+        /// Dapper Test
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public User GetById(int id)
         {
             using (var conn = new SqlConnection(ConnectionString))
             {
-                var query = String.Concat(@"SELECT 
-                                                 [Id]
-                                                ,[Name]
-                                                ,[LastName]
-                                                ,[BirthDate]
-                                                ,[Email]
-                                                ,[Active] 
-                                            FROM 
-                                                [dbo].[User] 
-                                            WHERE 
-                                                [Id] = {0}", id);
-
-                var users = conn.Get<User>(query);
-
+                var users = conn.Get<User>(id);
                 return users;
             }
         }

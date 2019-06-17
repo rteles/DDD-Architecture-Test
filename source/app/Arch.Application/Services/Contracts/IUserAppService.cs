@@ -6,6 +6,9 @@ namespace Arch.Application.Services.Contracts
     public interface IUserAppService
     {
         OperationResult AddUser(AddUserRequest request);
-        OperationResultList<UserResult> GetActiveUsers();
+        OperationResultList<UserResult> GetUsers(bool onlyActive);
+        OperationResult<UserResult> GetUser(int userId);
+        OperationResult UpdateUser(UpdateUserRequest request);
+        OperationResult DeleteUser(int userId);
     }
 }

@@ -18,9 +18,24 @@ namespace Arch.Core.Services
             _userRepository.Add(newUser);
         }
 
-        public IEnumerable<Entities.User> GetActiveUsers()
+        public void UpdateUser(Entities.User user)
         {
-            return _userRepository.GetActiveUsers();
+            _userRepository.Update(user);
+        }
+
+        public void DeleteUser(Entities.User user)
+        {
+            _userRepository.Remove(user);
+        }
+
+        public IEnumerable<Entities.User> GetUsers(bool onlyActive)
+        {
+            return _userRepository.GetUsers(onlyActive);
+        }
+
+        public Entities.User GetUser(int userId)
+        {
+            return _userRepository.GetById(userId);
         }
     }
 }
